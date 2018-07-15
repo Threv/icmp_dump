@@ -44,7 +44,7 @@ int IcmpListen(char *interface)
 	// set interface
 	struct ifreq opt_ifr;
 	memset(&opt_ifr, 0, sizeof(opt_ifr));
-	snprintf(opt_ifr.ifr_name, sizeof(opt_ifr.ifr_name), interface); 
+	snprintf(opt_ifr.ifr_name, sizeof(opt_ifr.ifr_name), "%s", interface); 
 	int ret = setsockopt(sockfd, IPPROTO_ICMP, SO_BINDTODEVICE, (void*)&opt_ifr, sizeof(opt_ifr));
 	if(ret < 0)
 	{
