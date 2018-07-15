@@ -62,6 +62,7 @@ int IcmpListen(char *interface)
 
 	// receive packets
 	struct sockaddr src_addr;
+	struct iphdr *header = (struct iphdr*) buffer;
 	int src_addr_size;
 	int data_size;
 	while(1)
@@ -73,7 +74,11 @@ int IcmpListen(char *interface)
 			printf("Failed to recieve packet\n");
 			continue;
 		}
-		HexAsciiDump(buffer, data_size); // dump packet
+		// sanity check (1 = ICMP)
+		if(header->protocol == 1)
+		{
+			HexAsciiDump(buffer, data_size); // dump packet
+		}
 	}
 	
 	close(sockfd);
@@ -81,11 +86,10 @@ int IcmpListen(char *interface)
 	return 0;
 }
 
-// dump ICMP packet, format: [offset] [hex] [ascii]
+// dump buffer, format: [offset] [hex] [ascii]
 int HexAsciiDump(unsigned char *buffer, int size )
 {
-	struct iphdr *header = (struct iphdr*) buffer;
-	if(size > 0 && header->protocol == 1) // sanity check
+	if(size > 0 && buffer != NULL) 
 	{ 
 		int size_up = size + (0x10 - (size % 0x10)); // used for hex/ascii aligning
 		int hexpass = 0; // hex/ascii print mode
