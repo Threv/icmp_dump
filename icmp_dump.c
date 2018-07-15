@@ -62,10 +62,11 @@ int IcmpListen(char *interface)
 
 	// receive packets
 	struct sockaddr src_addr;
-	int src_addr_size = sizeof(src_addr);
+	int src_addr_size;
 	int data_size;
 	while(1)
 	{
+		src_addr_size = sizeof(src_addr);
 		data_size = recvfrom(sockfd, buffer, BUFFER_SIZE, 0, &src_addr, &src_addr_size);
 		if(data_size < 0)
 		{
