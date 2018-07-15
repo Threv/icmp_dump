@@ -97,7 +97,7 @@ int HexAsciiDump(unsigned char *buffer, int size )
 				if(hexpass == 0)
 				{
 					if(i < size)
-						printf("\n0x%02x%02x: ", i>>0x10, i); // print offset
+						printf("\n0x%02x%02x: ", i >> 8, i % 0x100); // print offset
 					else
 						break;
 					hexpass = 1; // swap to hex
